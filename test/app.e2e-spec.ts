@@ -200,7 +200,5 @@ describe('App (e2e)', () => {
     });
   });
 
-  afterAll(async () => {
-    setTimeout(async () => await app.close(), 100);
-  });
+  afterAll(() => app.close());
 });

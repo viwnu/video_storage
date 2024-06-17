@@ -48,7 +48,7 @@ export class VideosController {
 
   @DeleteOne()
   @Delete(':id')
-  async remove(@Res() response: Response, @Param() params: QueryParamsDto) {
+  async remove(@Res() response: Response, @Param() params: QueryParamsDto): Promise<void> {
     await this.videosService.remove(response, params.id);
     response.end();
   }
