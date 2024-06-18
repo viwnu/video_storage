@@ -1,27 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './modules/app/app.module';
-import * as dotenv from 'dotenv';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+import { AppModule } from './features/app.module';
+import { configApp } from './config';
 
 async function bootstrap() {
+  const port = new ConfigService().get('PORT');
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('Video Storage')
-    .setDescription('The Video Storage API description')
-    .setVersion('1.0')
-    .addTag('VS')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  if (process.env.DOCUMENTATION === 'enable') SwaggerModule.setup('api/docs', app, document);
+  configApp(app);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-
-  await app.listen(process.env.port || 3000, () =>
-    console.log(`Server running on PORT: ${process.env.port || 3000}`),
-  );
+  await app.listen(port || 3000, () => console.log(`Server running on PORT: ${port || 3000}`));
 }
 bootstrap();

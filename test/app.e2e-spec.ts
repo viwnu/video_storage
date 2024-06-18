@@ -3,8 +3,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 
 import { modelChecker } from './utils/model.checker';
-import { AppModule } from '../src/modules/app/app.module';
-import { availabledResolutions } from '../src/modules/videos/entities/video.entity';
+import { AppModule } from '../src/features/app.module';
+import { availabledResolutions } from '../src/features/videos/domain/entities/video.entity';
 
 describe('App (e2e)', () => {
   let app: INestApplication;
@@ -24,6 +24,7 @@ describe('App (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
   });

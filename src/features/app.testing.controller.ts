@@ -1,9 +1,9 @@
 import { Controller, Delete, HttpCode } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { VideosService } from '../videos/videos.service';
+import { VideosService } from './videos/application/videos.service';
 
 @ApiTags('Очистка всей таблицы')
-@Controller('api/testing')
+@Controller('testing')
 export class AppTestingController {
   constructor(private videosService: VideosService) {}
 
@@ -11,7 +11,7 @@ export class AppTestingController {
   @ApiResponse({ status: 204 })
   @Delete('all-data')
   @HttpCode(204)
-  clearDatabase() {
-    this.videosService.removeAll();
+  async clearDatabase(): Promise<void> {
+    await this.videosService.removeAll();
   }
 }

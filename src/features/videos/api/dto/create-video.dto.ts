@@ -16,7 +16,7 @@ import {
   MinDate,
 } from 'class-validator';
 
-import { Video, availabledResolutions } from '../entities/video.entity';
+import { Video, availabledResolutions } from '../../domain/entities/video.entity';
 
 export class CreateVideoDto extends PartialType(Video) {
   @ApiProperty({ required: true })

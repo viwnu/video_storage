@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 export enum availabledResolutions {
   P144 = 'P144',
@@ -14,7 +14,7 @@ export enum availabledResolutions {
 
 @Entity()
 export class Video {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('uuid')
   id: string;
 
   @Column('varchar', { length: 40 })

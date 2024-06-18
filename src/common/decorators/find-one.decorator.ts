@@ -1,6 +1,6 @@
 import { ClassSerializerInterceptor, UseInterceptors, applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { VideoResponse } from '../entities/video.response.entity';
+import { VideoResponse } from '../../features/videos/domain/entities/video.response.entity';
 
 export function FindOne() {
   return applyDecorators(
