@@ -3,8 +3,7 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TypeOrmConfigService } from '../db';
-import { VideosModule } from '../features/videos/videos.module';
-import { AppTestingController } from '../features/app.testing.controller';
+import { VideosModule } from './videos/videos.module';
 
 @Module({
   imports: [
@@ -15,6 +14,5 @@ import { AppTestingController } from '../features/app.testing.controller';
     TypeOrmModule.forRootAsync(TypeOrmConfigService()),
     VideosModule,
   ],
-  controllers: [AppTestingController],
 })
 export class AppModule {}

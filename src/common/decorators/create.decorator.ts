@@ -1,11 +1,11 @@
 import { ClassSerializerInterceptor, UseInterceptors, applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { VideoResponse } from '../../features/videos/domain/entities/video.response.entity';
+import { VideoViewModel } from '../../features/videos/api/models/views';
 
 export function Create() {
   return applyDecorators(
     ApiOperation({ summary: 'Добавление видео' }),
-    ApiResponse({ status: 201, type: VideoResponse }),
+    ApiResponse({ status: 201, type: VideoViewModel }),
     ApiResponse({ status: 400, description: 'Error object' }),
     UseInterceptors(ClassSerializerInterceptor),
   );

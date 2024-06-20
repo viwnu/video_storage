@@ -11,35 +11,39 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { VideosService } from '../application';
-import { CreateVideoDto, UpdateVideoDto } from './dto';
-import { VideoResponse } from '../domain/entities';
 import { Create, FindAll, FindOne, UpdateOne, DeleteOne } from '../../../common/decorators';
 import { VideosQueryRepository } from '../infrastucture/repository/videos.query.repository';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateVideoCommand } from '../application/useCases/create-video.use-case';
+import { UpdateVideoCommand } from '../application/useCases/update-video.use-case';
+import { RemoveVideoCommand } from '../application/useCases/remove-video.use-case';
+import { CreateVideoInputModel, UpdateVideoInputModel } from './models/input';
+import { VideoViewModel } from './models/views';
 
 @ApiTags('Видео хостинг')
 @Controller('videos')
 export class VideosController {
   constructor(
-    private readonly videosService: VideosService,
+    private readonly commandBus: CommandBus,
     private readonly videosQueryRepository: VideosQueryRepository,
   ) {}
 
   @Create()
   @Post()
-  create(@Body() createVideoDto: CreateVideoDto): Promise<VideoResponse> {
-    return this.videosService.create(createVideoDto);
+  async create(@Body() createVideoDto: CreateVideoInputModel): Promise<VideoViewModel> {
+    const video = await this.commandBus.execute(new CreateVideoCommand(createVideoDto));
+    return video;
   }
 
   @FindAll()
   @Get()
-  findAll(): Promise<VideoResponse[]> {
+  findAll(): Promise<VideoViewModel[]> {
     return this.videosQueryRepository.findAll();
   }
 
   @FindOne()
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<VideoResponse> {
+  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<VideoViewModel> {
     return this.videosQueryRepository.findOne(id);
   }
 
@@ -48,15 +52,15 @@ export class VideosController {
   @Put(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateVideoDto: UpdateVideoDto,
+    @Body() updateVideoDto: UpdateVideoInputModel,
   ): Promise<void> {
-    await this.videosService.update(id, updateVideoDto);
+    await this.commandBus.execute(new UpdateVideoCommand(id, updateVideoDto));
   }
 
   @DeleteOne()
   @HttpCode(204)
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    await this.videosService.remove(id);
+    await this.commandBus.execute(new RemoveVideoCommand(id));
   }
 }

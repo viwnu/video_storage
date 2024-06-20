@@ -1,11 +1,11 @@
 import { ClassSerializerInterceptor, UseInterceptors, applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { VideoResponse } from '../../features/videos/domain/entities/video.response.entity';
+import { VideoViewModel } from '../../features/videos/api/models/views/video.view.model';
 
 export function FindOne() {
   return applyDecorators(
     ApiOperation({ summary: 'получение одного видео' }),
-    ApiResponse({ status: 200, type: VideoResponse }),
+    ApiResponse({ status: 200, type: VideoViewModel }),
     ApiResponse({ status: 404, description: 'Video doesn`t exist' }),
     ApiParam({ name: 'id', required: true, allowEmptyValue: false }),
     UseInterceptors(ClassSerializerInterceptor),

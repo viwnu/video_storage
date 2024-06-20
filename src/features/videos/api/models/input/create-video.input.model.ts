@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
   IsArray,
@@ -15,10 +15,9 @@ import {
   Min,
   MinDate,
 } from 'class-validator';
+import { availabledResolutions } from '../../../../../const/availabled-resolutions.enum';
 
-import { Video, availabledResolutions } from '../../domain/entities/video.entity';
-
-export class CreateVideoDto extends PartialType(Video) {
+export class CreateVideoInputModel {
   @ApiProperty({ required: true })
   @IsDefined({ message: 'title must be defined' })
   @IsString()
@@ -46,6 +45,7 @@ export class CreateVideoDto extends PartialType(Video) {
   @Max(18)
   minAgeRestriction?: number;
 
+  @IsOptional()
   @Transform(({ value }) => new Date(value)) // Потому что не уверен можно ли в JSON передать instanse of Date
   @IsDate() // Accept instanse of Date
   @MinDate(new Date('1950-01-01Z00:00:00:000Z'))

@@ -4,12 +4,14 @@ import * as request from 'supertest';
 
 import { modelChecker } from './utils/model.checker';
 import { AppModule } from '../src/features/app.module';
-import { availabledResolutions } from '../src/features/videos/domain/entities/video.entity';
+import { availabledResolutions } from '../src/const/availabled-resolutions.enum';
+import { randomUUID } from 'crypto';
 
 describe('App (e2e)', () => {
   let app: INestApplication;
 
   const mockVideo = {
+    id: randomUUID(),
     title: 'test video',
     author: 'test author',
     availabledResolutions: [availabledResolutions.P480],
@@ -47,11 +49,13 @@ describe('App (e2e)', () => {
     let postResponse;
 
     it(`api/videos/POST`, async () => {
-      postResponse = await request(app.getHttpServer()).post('/api/videos').send({
+      const payload = {
         title: mockVideo.title,
         author: mockVideo.author,
         availabledResolutions: mockVideo.availabledResolutions,
-      });
+      };
+      console.log(payload);
+      postResponse = await request(app.getHttpServer()).post('/api/videos').send(payload);
       expect(postResponse.status).toEqual(201);
       modelChecker(mockVideo)(postResponse.body);
     });
