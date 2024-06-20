@@ -1,33 +1,73 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { randomUUID } from 'crypto';
 
-import { availabledResolutions } from 'src/const';
+import { availabledResolutions } from '../../../../const';
 import { VideoService } from './service';
 import { CreateVideoType, VideoViewType } from '../../application/useCases/types';
+import {
+  IsArray,
+  IsBoolean,
+  IsByteLength,
+  IsDate,
+  IsDefined,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Max,
+  MaxDate,
+  Min,
+  MinDate,
+} from 'class-validator';
 
 @Entity()
 export class Video extends VideoService {
+  @IsUUID()
   @PrimaryColumn('uuid')
   id: string;
 
+  @IsDefined({ message: 'title must be defined' })
+  @IsString()
+  @IsByteLength(0, 40)
   @Column('varchar', { length: 40 })
   title: string;
 
+  @IsDefined({ message: 'author must be defined' })
+  @IsString()
+  @IsByteLength(0, 20)
   @Column('varchar', { length: 20 })
   author: string;
 
+  @IsOptional()
+  @IsArray()
+  @IsEnum(availabledResolutions, { each: true })
   @Column({ type: 'simple-array', nullable: true })
   availabledResolutions: availabledResolutions[];
 
+  @IsOptional()
+  @IsBoolean()
   @Column({ type: 'bool', nullable: true })
   canBeDownloaded?: boolean;
 
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  @Max(18)
   @Column({ type: 'int', nullable: true })
   minAgeRestriction?: number;
 
+  @IsDate() // Accept instanse of Date
+  @MinDate(new Date('1950-01-01Z00:00:00:000Z'))
+  @MaxDate(new Date('2070-01-01Z00:00:00:000Z'))
   @CreateDateColumn()
   createdAt?: string;
 
+  @IsOptional()
+  @IsDate() // Accept instanse of Date
+  @MinDate(new Date('1950-01-01Z00:00:00:000Z'))
+  @MaxDate(new Date('2070-01-01Z00:00:00:000Z'))
+  @CreateDateColumn()
   @Column('timestamp', { nullable: true })
   publicationDate?: string;
 

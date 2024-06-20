@@ -25,7 +25,7 @@ describe('App (e2e)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication({ logger: false });
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
@@ -54,16 +54,13 @@ describe('App (e2e)', () => {
         author: mockVideo.author,
         availabledResolutions: mockVideo.availabledResolutions,
       };
-      console.log(payload);
       postResponse = await request(app.getHttpServer()).post('/api/videos').send(payload);
       expect(postResponse.status).toEqual(201);
       modelChecker(mockVideo)(postResponse.body);
     });
 
     it(`api/videos/GET/\${id}`, async () => {
-      const getResponse = await request(app.getHttpServer()).get(
-        `/api/videos/${postResponse.body.id}`,
-      );
+      const getResponse = await request(app.getHttpServer()).get(`/api/videos/${postResponse.body.id}`);
       expect(getResponse.status).toEqual(200);
       modelChecker(mockVideo)(getResponse.body);
     });
@@ -113,17 +110,13 @@ describe('App (e2e)', () => {
     });
 
     it(`api/videos/GET/\${id}`, async () => {
-      const getResponse = await request(app.getHttpServer()).get(
-        `/api/videos/${postResponse.body.id}`,
-      );
+      const getResponse = await request(app.getHttpServer()).get(`/api/videos/${postResponse.body.id}`);
       expect(getResponse.status).toEqual(200);
       modelChecker(mockVideo)(getResponse.body);
     });
 
     it(`api/videos/GET/\${wrong id} NOT FOUND`, async () => {
-      const getResponse = await request(app.getHttpServer()).get(
-        `/api/videos/b7737c30-de46-4f21-afac-26fbfddc6c1e`,
-      );
+      const getResponse = await request(app.getHttpServer()).get(`/api/videos/b7737c30-de46-4f21-afac-26fbfddc6c1e`);
       expect(getResponse.status).toEqual(404);
     });
 
@@ -140,41 +133,33 @@ describe('App (e2e)', () => {
     });
 
     it(`api/videos/PUT/\${id}`, async () => {
-      const putResponse = await request(app.getHttpServer())
-        .put(`/api/videos/${postResponse.body.id}`)
-        .send({
-          title: 'new title',
-          minAgeRestriction: 15,
-        });
+      const putResponse = await request(app.getHttpServer()).put(`/api/videos/${postResponse.body.id}`).send({
+        title: 'new title',
+        minAgeRestriction: 15,
+      });
       expect(putResponse.status).toEqual(204);
       expect(Object.keys(putResponse.body)).toHaveLength(0);
     });
 
     it(`api/videos/GET/\${id}`, async () => {
-      const getResponse = await request(app.getHttpServer()).get(
-        `/api/videos/${postResponse.body.id}`,
-      );
+      const getResponse = await request(app.getHttpServer()).get(`/api/videos/${postResponse.body.id}`);
       expect(getResponse.status).toEqual(200);
       modelChecker({ ...mockVideo, title: 'new title', minAgeRestriction: 15 })(getResponse.body);
     });
 
     it(`api/videos/PUT/\${wrong id} NOT FOUND`, async () => {
-      const putResponse = await request(app.getHttpServer())
-        .put(`/api/videos/b7737c30-de46-4f21-afac-26fbfddc6c1e`)
-        .send({
-          title: 'new title',
-          minAgeRestriction: 15,
-        });
+      const putResponse = await request(app.getHttpServer()).put(`/api/videos/b7737c30-de46-4f21-afac-26fbfddc6c1e`).send({
+        title: 'new title',
+        minAgeRestriction: 15,
+      });
       expect(putResponse.status).toEqual(404);
     });
 
     it(`api/videos/PUT/\${id} BAD REQUEST`, async () => {
-      const putResponse = await request(app.getHttpServer())
-        .put(`/api/videos/${postResponse.body.id}`)
-        .send({
-          availabledResolutions: 'bla-bla',
-          minAgeRestriction: 90,
-        });
+      const putResponse = await request(app.getHttpServer()).put(`/api/videos/${postResponse.body.id}`).send({
+        availabledResolutions: 'bla-bla',
+        minAgeRestriction: 90,
+      });
       expect(putResponse.status).toEqual(400);
     });
 
@@ -191,16 +176,12 @@ describe('App (e2e)', () => {
     });
 
     it(`api/videos/DEL/\${id}`, async () => {
-      const delResponse = await request(app.getHttpServer()).del(
-        `/api/videos/${postResponse.body.id}`,
-      );
+      const delResponse = await request(app.getHttpServer()).del(`/api/videos/${postResponse.body.id}`);
       expect(delResponse.status).toEqual(204);
     });
 
     it(`api/videos/DEL/\${wrong id} NOT FOUND`, async () => {
-      const delResponse = await request(app.getHttpServer()).del(
-        `/api/videos/b7737c30-de46-4f21-afac-26fbfddc6c1e`,
-      );
+      const delResponse = await request(app.getHttpServer()).del(`/api/videos/b7737c30-de46-4f21-afac-26fbfddc6c1e`);
       expect(delResponse.status).toEqual(404);
     });
   });

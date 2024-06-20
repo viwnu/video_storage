@@ -12,7 +12,7 @@ export class RemoveVideoUseCase implements ICommandHandler<RemoveVideoCommand, v
   private logger = new Logger(RemoveVideoUseCase.name);
   constructor(private readonly videosRepository: VideosRepository) {}
   async execute({ id }: RemoveVideoCommand): Promise<void> {
-    this.logger.log('Removing Video');
+    this.logger.log(`Removing Video with: ${id}`);
     const video = await this.videosRepository.findOne(id);
     if (!video) throw new NotFoundException('Video doesn`t exist');
     await this.videosRepository.remove(video.id);

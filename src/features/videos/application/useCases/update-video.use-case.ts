@@ -16,7 +16,7 @@ export class UpdateVideoUseCase implements ICommandHandler<UpdateVideoCommand, v
   private logger = new Logger(UpdateVideoUseCase.name);
   constructor(private readonly videosRepository: VideosRepository) {}
   async execute({ id, updateVideoDto }: UpdateVideoCommand): Promise<void> {
-    this.logger.log('Updating Video');
+    this.logger.log(`Updating Video with: ${id} and: ${JSON.stringify(updateVideoDto)}`);
     const video = await this.videosRepository.findOne(id);
     if (!video) throw new NotFoundException('Video doesn`t exist');
     video.update(updateVideoDto);

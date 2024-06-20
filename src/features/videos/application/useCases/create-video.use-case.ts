@@ -14,6 +14,7 @@ export class CreateVideoUseCase implements ICommandHandler<CreateVideoCommand, V
   private logger = new Logger(CreateVideoUseCase.name);
   constructor(private readonly videosRepository: VideosRepository) {}
   async execute({ createVideoDto }: CreateVideoCommand): Promise<VideoViewType> {
+    this.logger.log(`Creating Video with: ${JSON.stringify(createVideoDto)}`);
     const newVideo = Video.create(createVideoDto);
     const video = await this.videosRepository.save(newVideo);
     return Video.buildVideoResponse(video);

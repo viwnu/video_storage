@@ -6,19 +6,9 @@ import { VideosService } from './application';
 import { VideosController, VideosTestingController } from './api';
 import { Video } from './domain/entities';
 import { VideosRepository, VideosQueryRepository } from './infrastucture/repository';
-import {
-  CreateVideoUseCase,
-  RemoveAllVideoUseCase,
-  RemoveVideoUseCase,
-  UpdateVideoUseCase,
-} from './application/useCases';
+import { CreateVideoUseCase, RemoveAllVideoUseCase, RemoveVideoUseCase, UpdateVideoUseCase } from './application/useCases';
 
-const useCases = [
-  CreateVideoUseCase,
-  UpdateVideoUseCase,
-  RemoveVideoUseCase,
-  RemoveAllVideoUseCase,
-];
+const useCases = [CreateVideoUseCase, UpdateVideoUseCase, RemoveVideoUseCase, RemoveAllVideoUseCase];
 @Module({
   imports: [TypeOrmModule.forFeature([Video]), CqrsModule],
   exports: [VideosService],

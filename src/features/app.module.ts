@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_FILTER } from '@nestjs/core';
 
 import { TypeOrmConfigService } from '../db';
 import { VideosModule } from './videos/videos.module';
+import { AllExceptionsFilter } from '../common/filters';
 
 @Module({
   imports: [
@@ -13,6 +15,12 @@ import { VideosModule } from './videos/videos.module';
     }),
     TypeOrmModule.forRootAsync(TypeOrmConfigService()),
     VideosModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
   ],
 })
 export class AppModule {}
