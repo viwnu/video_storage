@@ -4,7 +4,7 @@ import * as request from 'supertest';
 
 import { modelChecker } from './utils/model.checker';
 import { AppModule } from '../src/features/app.module';
-import { availabledResolutions } from '../src/const/availabled-resolutions.enum';
+import { availabledResolutions } from '../src/const';
 import { randomUUID } from 'crypto';
 
 describe('App (e2e)', () => {

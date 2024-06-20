@@ -1,5 +1,5 @@
 import { UpdateVideoInputModel } from 'src/features/videos/api/models/input';
-import { Video } from '../video.entity';
+import { Video } from '../';
 import { UpdateVideoType } from 'src/features/videos/application/useCases/types';
 
 export interface IUpdateVideo {

@@ -1,7 +1,7 @@
 import { Controller, Delete, HttpCode } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
-import { RemoveAllVideoCommand } from '../application/useCases/remove-all-video.use-case';
+import { RemoveAllVideoCommand } from '../application/useCases';
 
 @ApiTags('Очистка всей таблицы')
 @Controller('testing')

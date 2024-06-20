@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { randomUUID } from 'crypto';
 
-import { availabledResolutions } from 'src/const/availabled-resolutions.enum';
+import { availabledResolutions } from 'src/const';
 import { VideoService } from './service';
 import { CreateVideoType, VideoViewType } from '../../application/useCases/types';
 

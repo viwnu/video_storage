@@ -1,4 +1,4 @@
-import { availabledResolutions } from 'src/const/availabled-resolutions.enum';
+import { availabledResolutions } from 'src/const';
 
 export type CreateVideoType = {
   title: string;

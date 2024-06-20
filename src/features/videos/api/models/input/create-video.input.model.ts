@@ -15,7 +15,7 @@ import {
   Min,
   MinDate,
 } from 'class-validator';
-import { availabledResolutions } from '../../../../../const/availabled-resolutions.enum';
+import { availabledResolutions } from '../../../../../const';
 
 export class CreateVideoInputModel {
   @ApiProperty({ required: true })

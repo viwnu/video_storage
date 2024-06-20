@@ -10,13 +10,15 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CommandBus } from '@nestjs/cqrs';
 
 import { Create, FindAll, FindOne, UpdateOne, DeleteOne } from '../../../common/decorators';
-import { VideosQueryRepository } from '../infrastucture/repository/videos.query.repository';
-import { CommandBus } from '@nestjs/cqrs';
-import { CreateVideoCommand } from '../application/useCases/create-video.use-case';
-import { UpdateVideoCommand } from '../application/useCases/update-video.use-case';
-import { RemoveVideoCommand } from '../application/useCases/remove-video.use-case';
+import { VideosQueryRepository } from '../infrastucture/repository';
+import {
+  CreateVideoCommand,
+  RemoveVideoCommand,
+  UpdateVideoCommand,
+} from '../application/useCases';
 import { CreateVideoInputModel, UpdateVideoInputModel } from './models/input';
 import { VideoViewModel } from './models/views';
 
