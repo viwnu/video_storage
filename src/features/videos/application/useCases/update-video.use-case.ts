@@ -20,6 +20,7 @@ export class UpdateVideoUseCase implements ICommandHandler<UpdateVideoCommand, v
     const video = await this.videosRepository.findOne(id);
     if (!video) throw new NotFoundException('Video doesn`t exist');
     video.update(updateVideoDto);
+    video.plainToInstance();
     await this.videosRepository.save(video);
   }
 }

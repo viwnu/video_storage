@@ -11,6 +11,7 @@ export class VideosRepository {
 
   async save(video: Video): Promise<Video> {
     this.logger.log(`Save Video with: ${JSON.stringify(video)}`);
+    video.plainToInstance();
     return await this.videosRepository.save(video);
   }
 

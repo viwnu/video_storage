@@ -1,9 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { randomUUID } from 'crypto';
-
-import { availabledResolutions } from '../../../../const';
-import { VideoService } from './service';
-import { CreateVideoType, VideoViewType } from '../../application/useCases/types';
 import {
   IsArray,
   IsBoolean,
@@ -19,10 +15,18 @@ import {
   MaxDate,
   Min,
   MinDate,
+  validateSync,
 } from 'class-validator';
+import { Logger } from '@nestjs/common';
+
+import { availabledResolutions } from '../../../../const';
+import { VideoService } from './service';
+import { CreateVideoType, VideoViewType } from '../../application/useCases/types';
 
 @Entity()
 export class Video extends VideoService {
+  static logger = new Logger(Video.name);
+
   @IsUUID()
   @PrimaryColumn('uuid')
   id: string;
@@ -80,6 +84,13 @@ export class Video extends VideoService {
     newVideo.publicationDate = createVideoDto.publicationDate;
     newVideo.title = createVideoDto.title;
     newVideo.id = randomUUID();
+
+    const error = validateSync(newVideo);
+    if (!!error.length) {
+      error.forEach((e) => this.logger.error(e.constraints));
+      throw new Error('Video not valid');
+    }
+
     return newVideo;
   }
 
@@ -98,5 +109,9 @@ export class Video extends VideoService {
 
   static buildVideosResponse(videos: Video[]): VideoViewType[] {
     return videos.map((video) => Video.buildVideoResponse(video));
+  }
+
+  plainToInstance(): void {
+    validateSync(this, { whitelist: true });
   }
 }
