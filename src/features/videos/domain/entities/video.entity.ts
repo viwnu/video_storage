@@ -61,9 +61,6 @@ export class Video extends VideoService {
   @Column({ type: 'int', nullable: true })
   minAgeRestriction?: number;
 
-  @IsDate() // Accept instanse of Date
-  @MinDate(new Date('1950-01-01Z00:00:00:000Z'))
-  @MaxDate(new Date('2070-01-01Z00:00:00:000Z'))
   @CreateDateColumn()
   createdAt?: string;
 
