@@ -25,7 +25,7 @@ import { CreateVideoType, VideoViewType } from '../../application/useCases/types
 
 @Entity()
 export class Video extends VideoService {
-  static logger = new Logger(Video.name);
+  logger = new Logger(Video.name);
 
   @IsUUID()
   @PrimaryColumn('uuid')
@@ -84,7 +84,7 @@ export class Video extends VideoService {
 
     const error = validateSync(newVideo);
     if (!!error.length) {
-      error.forEach((e) => this.logger.error(e.constraints));
+      error.forEach((e) => newVideo.logger.error(e.constraints));
       throw new Error('Video not valid');
     }
 
