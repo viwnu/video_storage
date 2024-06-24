@@ -1,12 +1,14 @@
 import { Controller, Get, Post, Body, Param, Delete, Put, HttpCode, ParseUUIDPipe, Logger } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { Create, FindAll, FindOne, UpdateOne, DeleteOne } from '../../../common/decorators';
-import { VideosQueryRepository } from '../infrastucture/repository';
-import { CreateVideoCommand, RemoveVideoCommand, UpdateVideoCommand } from '../application/useCases';
+import { CreateVideoCommand, RemoveVideoCommand, UpdateVideoCommand } from '../application/commands';
+
 import { CreateVideoInputModel, UpdateVideoInputModel } from './models/input';
 import { VideoViewModel } from './models/views';
+import { GetVideoQuery } from '../application/queries/get-video/get-video.query';
+import { GetVideosQuery } from '../application/queries/get-videos/get-videos.query';
 
 @ApiTags('Видео хостинг')
 @Controller('videos')
@@ -14,7 +16,7 @@ export class VideosController {
   private logger = new Logger(VideosController.name);
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly videosQueryRepository: VideosQueryRepository,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @Create()
@@ -29,14 +31,14 @@ export class VideosController {
   @Get()
   findAll(): Promise<VideoViewModel[]> {
     this.logger.log(`controller ${this.findAll.name} method`);
-    return this.videosQueryRepository.findAll();
+    return this.queryBus.execute(new GetVideosQuery());
   }
 
   @FindOne()
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<VideoViewModel> {
     this.logger.log(`controller ${this.findOne.name} method with recieved: ${id}`);
-    return this.videosQueryRepository.findOne(id);
+    return this.queryBus.execute(new GetVideoQuery(id));
   }
 
   @HttpCode(204)

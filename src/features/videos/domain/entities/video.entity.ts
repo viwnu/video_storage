@@ -21,7 +21,7 @@ import { Logger } from '@nestjs/common';
 
 import { availabledResolutions } from '../../../../const';
 import { VideoService } from './service';
-import { CreateVideoType, VideoViewType } from '../../application/useCases/types';
+import { CreateVideoType, VideoViewType } from '../../application/commands/types';
 
 @Entity()
 export class Video extends VideoService {

@@ -1,6 +1,6 @@
 import { UpdateVideoInputModel } from 'src/features/videos/api/models/input';
 import { Video } from '../';
-import { UpdateVideoType } from 'src/features/videos/application/useCases/types';
+import { UpdateVideoType } from 'src/features/videos/application/commands/types';
 
 export interface IUpdateVideo {
   update(updateVideoDto: UpdateVideoInputModel): void;

@@ -1,15 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger, NotFoundException } from '@nestjs/common';
 
-import { VideosRepository } from '../../infrastucture/repository';
-
-export class RemoveVideoCommand {
-  constructor(public id: string) {}
-}
+import { VideosRepository } from '../../../infrastucture/repository';
+import { RemoveVideoCommand } from './remove-video.command';
 
 @CommandHandler(RemoveVideoCommand)
-export class RemoveVideoUseCase implements ICommandHandler<RemoveVideoCommand, void> {
-  private logger = new Logger(RemoveVideoUseCase.name);
+export class RemoveVideoCommandHandler implements ICommandHandler<RemoveVideoCommand, void> {
+  private logger = new Logger(RemoveVideoCommandHandler.name);
   constructor(private readonly videosRepository: VideosRepository) {}
   async execute({ id }: RemoveVideoCommand): Promise<void> {
     this.logger.log(`Removing Video with: ${id}`);
