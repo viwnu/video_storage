@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger, NotFoundException } from '@nestjs/common';
 
+import { UpdateVideoCommand } from './';
 import { VideosRepository } from '../../../infrastucture/repository';
-import { UpdateVideoCommand } from './update-video.command';
 
 @CommandHandler(UpdateVideoCommand)
 export class UpdateVideoCommandHandler implements ICommandHandler<UpdateVideoCommand, void> {

@@ -1,20 +1,19 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 
-import { Video } from '../../../domain/entities';
+import { CreateVideoCommand } from './';
+import { VideoAgregate, VideoBuildResponse } from '../../../domain';
 import { VideosRepository } from '../../../infrastucture/repository';
-import { VideoViewType } from '../types';
-import { CreateVideoCommand } from './create-video.command';
 
 @CommandHandler(CreateVideoCommand)
-export class CreateVideoCommandHandler implements ICommandHandler<CreateVideoCommand, VideoViewType> {
+export class CreateVideoCommandHandler implements ICommandHandler<CreateVideoCommand, VideoBuildResponse> {
   private logger = new Logger(CreateVideoCommandHandler.name);
   constructor(private readonly videosRepository: VideosRepository) {}
-  async execute({ createVideoDto }: CreateVideoCommand): Promise<VideoViewType> {
+  async execute({ createVideoDto }: CreateVideoCommand): Promise<VideoBuildResponse> {
     this.logger.log(`Creating Video with: ${JSON.stringify(createVideoDto)}`);
-    const newVideo = Video.create(createVideoDto);
+    const newVideo = VideoAgregate.create(createVideoDto);
     newVideo.plainToInstance();
     const video = await this.videosRepository.save(newVideo);
-    return Video.buildVideoResponse(video);
+    return VideoAgregate.buildVideoResponse(video);
   }
 }

@@ -1,9 +1,9 @@
-import { availabledResolutions } from 'src/const';
+import { availabledResolutions } from '../../../../../const';
 
 export type UpdateVideoType = {
   title?: string;
   author?: string;
-  availabledResolutions?: availabledResolutions[];
+  availabledResolutions?: availabledResolutions;
   canBeDownloaded?: boolean;
   minAgeRestriction?: number;
   publicationDate?: string;

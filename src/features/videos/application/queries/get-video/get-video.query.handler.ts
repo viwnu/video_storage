@@ -2,18 +2,17 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Logger, NotFoundException } from '@nestjs/common';
 
 import { VideosRepository } from '../../../infrastucture/repository';
-import { GetVideoQuery } from './get-video.query';
-import { Video } from '../../../domain/entities/video.entity';
-import { VideoViewType } from '../../commands/types';
+import { GetVideoQuery } from './';
+import { VideoAgregate, VideoBuildResponse } from '../../../domain';
 
 @QueryHandler(GetVideoQuery)
-export class GetVideoQueryHandler implements IQueryHandler<GetVideoQuery, VideoViewType> {
+export class GetVideoQueryHandler implements IQueryHandler<GetVideoQuery, VideoBuildResponse> {
   private logger = new Logger(GetVideoQueryHandler.name);
   constructor(private readonly videosRepository: VideosRepository) {}
-  async execute({ id }: GetVideoQuery): Promise<VideoViewType> {
+  async execute({ id }: GetVideoQuery): Promise<VideoBuildResponse> {
     this.logger.log(`Searching Video by id: ${id}`);
     const video = await this.videosRepository.findOne(id);
     if (!video) throw new NotFoundException('Video doesn`t exist');
-    return Video.buildVideoResponse(video);
+    return VideoAgregate.buildVideoResponse(video);
   }
 }

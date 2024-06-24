@@ -1,8 +1,8 @@
-import { UpdateVideoInputModel } from 'src/features/videos/api/models/input';
+import { UpdateVideoType } from './update-video.type';
 
 export class UpdateVideoCommand {
   constructor(
     public id: string,
-    public updateVideoDto: UpdateVideoInputModel,
+    public updateVideoDto: UpdateVideoType,
   ) {}
 }

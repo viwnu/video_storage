@@ -1,13 +1,12 @@
 import { Controller, Delete, HttpCode, Logger } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CommandBus } from '@nestjs/cqrs';
-import { RemoveAllVideoCommand } from '../application/commands';
+import { VideoFasade } from '../application/video.fasade';
 
 @ApiTags('Очистка всей таблицы')
 @Controller('testing')
 export class VideosTestingController {
   private logger = new Logger(VideosTestingController.name);
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(private readonly videoFasade: VideoFasade) {}
 
   @ApiOperation({ summary: 'Очиска' })
   @ApiResponse({ status: 204 })
@@ -15,6 +14,6 @@ export class VideosTestingController {
   @HttpCode(204)
   async clearDatabase(): Promise<void> {
     this.logger.log(`controller ${this.clearDatabase.name} method`);
-    await this.commandBus.execute(new RemoveAllVideoCommand());
+    await this.videoFasade.commands.removeAllVideo();
   }
 }

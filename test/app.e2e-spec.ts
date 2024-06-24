@@ -14,7 +14,7 @@ describe('App (e2e)', () => {
     id: randomUUID(),
     title: 'test video',
     author: 'test author',
-    availabledResolutions: [availabledResolutions.P480],
+    availabledResolutions: availabledResolutions.P480,
     canBeDownloaded: true,
     minAgeRestriction: 1,
     publicationDate: new Date().toISOString(),

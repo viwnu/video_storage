@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 
+import { RemoveAllVideoCommand } from './';
 import { VideosRepository } from '../../../infrastucture/repository';
-import { RemoveAllVideoCommand } from './remove-all-video.command';
 
 @CommandHandler(RemoveAllVideoCommand)
 export class RemoveAllVideoCommandHandler implements ICommandHandler<RemoveAllVideoCommand, void> {

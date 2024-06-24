@@ -1,12 +1,10 @@
-import { UpdateVideoInputModel } from 'src/features/videos/api/models/input';
-import { Video } from '../';
-import { UpdateVideoType } from 'src/features/videos/application/commands/types';
+import { IVideo } from '../video.interface';
 
 export interface IUpdateVideo {
-  update(updateVideoDto: UpdateVideoInputModel): void;
+  update(updateVideoDto: Partial<IVideo>): void;
 }
 
-export const UPDATE_VIDEO = function (this: Video, updateVideoDto: UpdateVideoType): void {
+export const UPDATE_VIDEO = function (this: IVideo, updateVideoDto: Partial<IVideo>): void {
   this.author = updateVideoDto.author ?? this.author;
   this.availabledResolutions = updateVideoDto.availabledResolutions ?? this.availabledResolutions;
   this.canBeDownloaded = updateVideoDto.canBeDownloaded ?? this.canBeDownloaded;

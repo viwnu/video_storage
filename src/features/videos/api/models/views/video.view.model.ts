@@ -13,11 +13,10 @@ export class VideoViewModel {
 
   @ApiProperty({
     enum: availabledResolutions,
-    isArray: true,
-    example: ['P360', 'P480'],
+    example: 'P480',
     description: 'Доступные разрешения',
   })
-  availabledResolutions: availabledResolutions[];
+  availabledResolutions: availabledResolutions;
 
   @ApiProperty({ type: 'boolean', example: true, description: 'Можно ли скачать' })
   canBeDownloaded?: boolean;

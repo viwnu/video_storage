@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
-  IsArray,
   IsBoolean,
   IsByteLength,
   IsDate,
@@ -31,9 +30,8 @@ export class CreateVideoInputModel {
   author!: string;
 
   @IsOptional()
-  @IsArray()
-  @IsEnum(availabledResolutions, { each: true })
-  availabledResolutions?: availabledResolutions[];
+  @IsEnum(availabledResolutions)
+  availabledResolutions?: availabledResolutions;
 
   @IsOptional()
   @IsBoolean()

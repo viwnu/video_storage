@@ -1,8 +1,14 @@
-export * from './create-video/create-video.command';
-export * from './remove-all-video/remove-all-video.command';
-export * from './remove-video/remove-video.command';
-export * from './update-video/update-video.command';
-export * from './create-video/create-video.command.handler';
-export * from './remove-all-video/remove-all-video.command.handler';
-export * from './remove-video/remove-video.command.handler';
-export * from './update-video/update-video.command.handler';
+import { Type } from '@nestjs/common';
+import { ICommandHandler } from '@nestjs/cqrs';
+
+import { CreateVideoCommandHandler } from './create-video';
+import { UpdateVideoCommandHandler } from './update-video';
+import { RemoveVideoCommandHandler } from './remove-video';
+import { RemoveAllVideoCommandHandler } from './remove-all-video';
+
+export const COMMAND_HANDLERS: Type<ICommandHandler>[] = [
+  CreateVideoCommandHandler,
+  UpdateVideoCommandHandler,
+  RemoveVideoCommandHandler,
+  RemoveAllVideoCommandHandler,
+];
