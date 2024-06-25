@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import * as request from 'supertest';
 
 import { modelChecker } from './utils/model.checker';
 import { AppModule } from '../src/features/app.module';
 import { availabledResolutions } from '../src/const';
-import { randomUUID } from 'crypto';
 
 describe('App (e2e)', () => {
   let app: INestApplication;

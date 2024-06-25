@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../core';
+import { BaseEntity } from '@app/core';
 import { Column, Entity } from 'typeorm';
 
 enum availabledResolutions {

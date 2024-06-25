@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { VideosRepository } from '../repository';
 import { Video } from '../../../../db/entities';
 import { VideoAgregate } from '../../domain';
-import { AdapterRepository } from '../../../../core';
+import { AdapterRepository } from '@app/core';
 
 @Injectable()
 export class VideosAdapter extends AdapterRepository<VideoAgregate, Video> implements VideosRepository {

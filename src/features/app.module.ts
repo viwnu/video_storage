@@ -5,7 +5,7 @@ import { APP_FILTER } from '@nestjs/core';
 
 import { TypeOrmConfigService } from '../db';
 import { VideosModule } from './videos/videos.module';
-import { AllExceptionsFilter } from '../common/filters';
+import { AllExceptionsFilter } from '@app/common/filters';
 
 @Module({
   imports: [
