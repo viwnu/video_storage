@@ -25,17 +25,31 @@ export class MinioAdapterService {
     }
   }
 
-  async uploadFile(file: Express.Multer.File) {
-    const fileName = `${Date.now()}-${file.originalname}`;
-    await this.minioClient.putObject(this.bucketName, fileName, file.buffer, file.size);
-    return fileName;
+  async uploadFile(fileId: string, file: Express.Multer.File) {
+    return await this.minioClient.putObject(this.bucketName, fileId, file.buffer, file.size);
   }
 
-  async getFileUrl(fileName: string) {
-    return await this.minioClient.presignedUrl('GET', this.bucketName, fileName);
+  async downloadFile(fileId: string): Promise<Buffer> {
+    const dataStream = await this.minioClient.getObject(this.bucketName, fileId);
+    const chunks: any[] = [];
+    return new Promise((resolve, reject) => {
+      dataStream.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      dataStream.on('end', () => {
+        resolve(Buffer.concat(chunks));
+      });
+      dataStream.on('error', (error) => {
+        reject(error);
+      });
+    });
   }
 
-  async deleteFile(fileName: string) {
-    await this.minioClient.removeObject(this.bucketName, fileName);
+  async getFileUrl(fileId: string) {
+    return await this.minioClient.presignedUrl('GET', this.bucketName, fileId);
+  }
+
+  async deleteFile(fileId: string) {
+    await this.minioClient.removeObject(this.bucketName, fileId);
   }
 }

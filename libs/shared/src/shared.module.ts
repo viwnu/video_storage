@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SharedService } from './shared.service';
-import { MinioAdapterModule } from './minio-adapter/minio-adapter.module';
-import { FileManagerModule } from './file-manager/file-manager.module';
+import { MinioAdapterModule } from './adapters/minio-adapter/minio-adapter.module';
+import { FileManagerModule } from './managers/file-manager/file-manager.module';
 
 @Module({
   providers: [SharedService],
