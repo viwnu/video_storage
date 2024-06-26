@@ -1,0 +1,22 @@
+{
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "../../",
+    "testEnvironment": "node",
+    "testRegex": ".e2e-spec.ts",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "@app/common/(.*)": "<rootDir>/../libs/common/src/$1",
+      "@app/common": "<rootDir>/../libs/common/src",
+      "@app/core/(.*)": "<rootDir>/../libs/core/src/$1",
+      "@app/core": "<rootDir>/../libs/core/src",
+      "@app/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
+      "@app/shared": "<rootDir>/../libs/shared/src"
+    },
+    "modulePathIgnorePatterns": ["<rootDir>/apps/video_storage"]
+  }
