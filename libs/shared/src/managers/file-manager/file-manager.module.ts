@@ -5,5 +5,6 @@ import { MinioAdapterModule } from '@app/shared/adapters/minio-adapter/minio-ada
 @Module({
   imports: [MinioAdapterModule],
   providers: [FileManagerService],
+  exports: [FileManagerService],
 })
 export class FileManagerModule {}

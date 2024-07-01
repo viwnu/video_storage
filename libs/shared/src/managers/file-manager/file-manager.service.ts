@@ -14,11 +14,19 @@ export class FileManagerService {
     return await this.minioAdapterService.downloadFile(fileId);
   }
 
+  async downloadFileStream(fileId: string) {
+    return await this.minioAdapterService.downloadFileStream(fileId);
+  }
+
   async getFileUrl(fileId: string) {
     return await this.minioAdapterService.getFileUrl(fileId);
   }
 
   async deleteFile(fileId: string) {
     await this.minioAdapterService.deleteFile(fileId);
+  }
+
+  async deleteAllFiles() {
+    await this.minioAdapterService.deleteAllFiles();
   }
 }

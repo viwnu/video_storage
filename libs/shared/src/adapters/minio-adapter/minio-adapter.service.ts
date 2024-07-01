@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as Minio from 'minio';
 
 @Injectable()
 export class MinioAdapterService {
+  private logger = new Logger(MinioAdapterService.name);
   private minioClient: Minio.Client;
   private bucketName: string;
 
@@ -19,14 +20,22 @@ export class MinioAdapterService {
   }
 
   async createBucketIfNotExists() {
-    const bucketExists = await this.minioClient.bucketExists(this.bucketName);
-    if (!bucketExists) {
-      await this.minioClient.makeBucket(this.bucketName);
+    this.logger.log(`createBucketIfNotExists`);
+    try {
+      const bucketExists = await this.minioClient.bucketExists(this.bucketName);
+      if (!bucketExists) {
+        await this.minioClient.makeBucket(this.bucketName);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
   }
 
   async uploadFile(fileId: string, file: Express.Multer.File) {
-    return await this.minioClient.putObject(this.bucketName, fileId, file.buffer, file.size);
+    this.logger.log(`${this.uploadFile.name} method with: ${fileId} and ${file.originalname}`);
+    return await this.minioClient.putObject(this.bucketName, fileId, file.buffer, file.size, {
+      'Content-Type': file.mimetype || 'application/octet-stream',
+    });
   }
 
   async downloadFile(fileId: string): Promise<Buffer> {
@@ -45,11 +54,25 @@ export class MinioAdapterService {
     });
   }
 
+  async downloadFileStream(fileId: string) {
+    return await this.minioClient.getObject(this.bucketName, fileId);
+  }
+
   async getFileUrl(fileId: string) {
-    return await this.minioClient.presignedUrl('GET', this.bucketName, fileId);
+    return await this.minioClient.presignedUrl('GET', this.bucketName, fileId, 24 * 60 * 60);
   }
 
   async deleteFile(fileId: string) {
     await this.minioClient.removeObject(this.bucketName, fileId);
+  }
+
+  async deleteAllFiles() {
+    const stream = await this.minioClient.listObjects(this.bucketName);
+    stream.on('data', async (obj) => {
+      await this.minioClient.removeObject(this.bucketName, obj.name);
+    });
+    stream.on('error', (err) => {
+      console.log(err);
+    });
   }
 }
