@@ -2,10 +2,10 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-
-import { CreateVideoEvent } from './';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
+
+import { CreateVideoEvent } from './';
 
 @EventsHandler(CreateVideoEvent)
 export class CreateVideoEventHandler implements IEventHandler<CreateVideoEvent> {
