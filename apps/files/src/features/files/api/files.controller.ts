@@ -21,9 +21,11 @@ export class FilesController {
 
   @CreateFileDescription()
   @Post()
-  async createFileDescription(@Body() createFileDto: CreateFileDescriptionInputModel) {
-    this.logger.log(`controller ${this.createFileDescription.name} method with recieved: ${JSON.stringify(createFileDto)}`);
-    return await this.fileFasade.commands.createFileDescription(createFileDto);
+  async createFileDescription(@Body() createFileDescriptionDto: CreateFileDescriptionInputModel) {
+    this.logger.log(
+      `controller ${this.createFileDescription.name} method with recieved: ${JSON.stringify(createFileDescriptionDto)}`,
+    );
+    return await this.fileFasade.commands.createFileDescription(createFileDescriptionDto);
   }
 
   @UploadFile()

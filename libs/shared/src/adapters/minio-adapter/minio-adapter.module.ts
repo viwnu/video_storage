@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MinioAdapterService } from './minio-adapter.service';
+import { MinioAdapterService } from './';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

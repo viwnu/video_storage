@@ -1,4 +1,4 @@
-import { MinioAdapterService } from '@app/shared/adapters/minio-adapter/minio-adapter.service';
+import { MinioAdapterService } from '@app/shared/adapters/minio-adapter';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

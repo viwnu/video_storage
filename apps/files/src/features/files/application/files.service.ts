@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException, StreamableF
 import { FileDescriptionsRepository } from '../infrastucture/repository/file-descriptions.repository';
 import { CreateFileDescriptionType } from './commands/create-file-description';
 import { FileDescriptionAgregate, FileMetaDataAgregate, IDownloadFileResponse, IFileMetaData } from '../domain';
-import { FileManagerService } from '@app/shared/managers/file-manager/file-manager.service';
+import { FileManagerService } from '@app/shared/managers/file-manager';
 import { UploadFileType } from './commands/upload-file';
 import { FileMetaDatasRepository } from '../infrastucture/repository';
 

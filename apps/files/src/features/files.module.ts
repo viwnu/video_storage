@@ -15,9 +15,11 @@ import { FileDescription } from '../db/entities/file-description.entity';
 import { FileMetaDatasRepository } from './files/infrastucture/repository';
 import { FileMetaDataAdaptor } from './files/infrastucture/adapter/file-metadata.adaptor';
 import { QUERIES_HANDLERS } from './files/application/queries';
+import { FilesConsumer } from './files/api/files.consumer';
+import { ProvidersModule } from '@app/providers';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FileDescription, FileMetaData]), CqrsModule, SharedModule],
+  imports: [TypeOrmModule.forFeature([FileDescription, FileMetaData]), CqrsModule, SharedModule, ProvidersModule],
   exports: [FilesService],
   controllers: [FilesController],
   providers: [
@@ -27,6 +29,7 @@ import { QUERIES_HANDLERS } from './files/application/queries';
     ...QUERIES_HANDLERS,
     { provide: FileDescriptionsRepository, useClass: FileDescriptionsAdaptor },
     { provide: FileMetaDatasRepository, useClass: FileMetaDataAdaptor },
+    FilesConsumer,
   ],
 })
 export class FilesModule {}

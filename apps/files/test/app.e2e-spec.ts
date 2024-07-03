@@ -2,10 +2,9 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { randomUUID } from 'crypto';
 import * as request from 'supertest';
-// import path from 'path';
 import { readFile } from 'fs/promises';
 
-import { AppModule } from '../src/app.moule';
+import { AppModule } from '../src/app.module';
 import { IFileDescription } from '../src/features/files/domain';
 import { modelChecker } from './utils/model.checker';
 import { FileMetaDataViewModel } from '../src/features/files/api/models/view';
@@ -23,7 +22,6 @@ describe('files (e2e)', () => {
   };
 
   const fileName = 'ТЗ files (2).docx';
-  // const filePath = path.resolve('C:/Users/Porfirev/Downloads', fileName);
 
   const mockFileMetaData: FileMetaDataViewModel = {
     id: randomUUID(),

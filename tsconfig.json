@@ -35,6 +35,12 @@
       ],
       "@app/shared/*": [
         "libs/shared/src/*"
+      ],
+      "@app/providers": [
+        "libs/providers/src"
+      ],
+      "@app/providers/*": [
+        "libs/providers/src/*"
       ]
     }
   },

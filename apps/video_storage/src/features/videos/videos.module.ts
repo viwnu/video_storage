@@ -13,9 +13,11 @@ import { VideoFasade } from './application/video.fasade';
 import { videoFasadeFactory } from './application/video.fasade.factory';
 import { VideosAdapter } from './infrastucture/adapter';
 import { HttpModule } from '@nestjs/axios';
+import { ProvidersModule } from '@app/providers';
+import { ProducerService } from '@app/providers/kafka/producer';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Video]), CqrsModule, HttpModule.register({ timeout: 5000 })],
+  imports: [TypeOrmModule.forFeature([Video]), CqrsModule, HttpModule.register({ timeout: 5000 }), ProvidersModule],
   exports: [VideosService],
   controllers: [VideosController, VideosTestingController],
   providers: [
@@ -25,6 +27,7 @@ import { HttpModule } from '@nestjs/axios';
     ...EVENTS_HANDLERS,
     { provide: VideoFasade, inject: [CommandBus, EventBus, QueryBus], useFactory: videoFasadeFactory },
     { provide: VideosRepository, useClass: VideosAdapter },
+    ProducerService,
   ],
 })
 export class VideosModule {}

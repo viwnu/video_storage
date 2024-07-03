@@ -16,7 +16,9 @@
     "@app/core/(.*)": "<rootDir>/../libs/core/src/$1",
     "@app/core": "<rootDir>/../libs/core/src",
     "@app/shared/(.*)": "<rootDir>/../libs/shared/src/$1",
-    "@app/shared": "<rootDir>/../libs/shared/src"
+    "@app/shared": "<rootDir>/../libs/shared/src",
+    "@app/providers/(.*)": "<rootDir>/../libs/providers/src/$1",
+    "@app/providers": "<rootDir>/../libs/providers/src"
   },
   "modulePathIgnorePatterns": ["<rootDir>/apps/files"]
 }
