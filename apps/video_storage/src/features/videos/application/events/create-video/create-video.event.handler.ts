@@ -1,6 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateVideoEvent } from './';
@@ -11,7 +10,6 @@ export class CreateVideoEventHandler implements IEventHandler<CreateVideoEvent> 
   private logger = new Logger(CreateVideoEventHandler.name);
   constructor(
     private readonly configService: ConfigService,
-    private readonly httpService: HttpService,
     private readonly producerService: ProducerService,
   ) {}
   filesAppBaseEndpoint = this.configService.get('FILES_APP_BASE_ENDPOINT');
