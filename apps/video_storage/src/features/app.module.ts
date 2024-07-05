@@ -6,7 +6,6 @@ import { APP_FILTER } from '@nestjs/core';
 import { TypeOrmConfigService } from '../db';
 import { VideosModule } from './videos/videos.module';
 import { AllExceptionsFilter } from '@app/common/filters';
-import { OutboxModule } from './outbox/outbox.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { OutboxModule } from './outbox/outbox.module';
     }),
     TypeOrmModule.forRootAsync(TypeOrmConfigService()),
     VideosModule,
-    OutboxModule,
   ],
   providers: [
     {

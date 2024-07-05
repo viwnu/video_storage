@@ -17,6 +17,6 @@ export class CreateVideoEventHandler implements IEventHandler<CreateVideoEvent> 
     this.logger.log(`Video with id: ${videoId} was created with title: ${title}`);
 
     // Do it with kafka:
-    await this.producerService.produce('create-video', { value: JSON.stringify({ title, fileId: videoId }) });
+    // await this.producerService.produce('create-video', { value: JSON.stringify({ title, fileId: videoId }) });
   }
 }

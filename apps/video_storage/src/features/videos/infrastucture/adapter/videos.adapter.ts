@@ -6,7 +6,8 @@ import { AdapterRepository } from '@app/core';
 import { VideosRepository } from '../repository';
 import { Video } from '../../../../db/entities';
 import { VideoAgregate } from '../../domain';
-import { OutboxService } from '../../../outbox/application';
+import { OutboxMessageType } from '../../../../const';
+import { OutboxService } from '@app/providers/outbox/features/outbox/application';
 
 @Injectable()
 export class VideosAdapter extends AdapterRepository<VideoAgregate, Video> implements VideosRepository {
@@ -22,11 +23,11 @@ export class VideosAdapter extends AdapterRepository<VideoAgregate, Video> imple
     return VideoAgregate.mapping(entity);
   }
 
-  async saveWithTransaction(entity: VideoAgregate): Promise<VideoAgregate> {
+  async saveWithMessage(entity: VideoAgregate, message: OutboxMessageType): Promise<VideoAgregate> {
     const createdEntity = this.videosRepository.create(entity);
     const savedEntity = await this.dataSource.transaction<Video>(async (manager: EntityManager): Promise<Video> => {
       const savedEntity = await manager.save(createdEntity);
-      await this.outboxService.addMessage(manager, 'create-video', savedEntity);
+      await this.outboxService.addMessage(manager, 'create-video', message);
       return savedEntity;
     });
     return this.mapping(savedEntity);

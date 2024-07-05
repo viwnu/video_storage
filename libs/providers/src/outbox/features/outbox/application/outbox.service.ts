@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
-import { Outbox, Video } from '../../../db/entities';
-import { OutboxRepository } from '../infrastucture/repository/outbox.repository';
-import { ProducerService } from '@app/providers/kafka/producer';
+
+import { Outbox } from '../../../db/entities';
+import { OutboxRepository } from '../infrastucture/repository';
+import { ProducerService } from '../../../../kafka/producer';
+import { OutboxAgregate } from '../domain';
 
 enum outboxStatus {
   created = 'created',
@@ -18,32 +20,32 @@ export class OutboxService {
     private readonly producerService: ProducerService,
   ) {}
 
-  async addMessage(manager: EntityManager, topic: string, payload: Video): Promise<void> {
+  async addMessage(manager: EntityManager, topic: string, payload: any): Promise<void> {
     this.logger.log(`${this.addMessage.name} method`);
-    const entityInstance = manager.create(Outbox, {
+    const message = OutboxAgregate.create({
       topic,
       payload: JSON.stringify(payload),
       status: outboxStatus.created,
-      videoId: payload.id,
+      // entityId: payload.id,
     });
-    await manager.save(entityInstance);
+    await manager.save(manager.create(Outbox, message));
   }
 
-  async findCreatedMessages(): Promise<Outbox[]> {
+  async findCreatedMessages(): Promise<OutboxAgregate[]> {
     this.logger.log(`${this.findCreatedMessages.name} method`);
     return this.outboxRepository.findCreatedMessages();
   }
 
-  async sendMessage(message: Outbox): Promise<void> {
+  async sendMessage(message: OutboxAgregate): Promise<void> {
     this.logger.log(`${this.sendMessage.name} method with ${message.payload}`);
     await this.producerService.produce(message.topic, { value: message.payload });
+    const sendedMessage = OutboxAgregate.mapping({ ...message, status: outboxStatus.sent });
+    sendedMessage.plainToInstance();
+    await this.outboxRepository.save(sendedMessage);
   }
 
   async sendMessages(): Promise<void> {
     const unsendedMessages = await this.findCreatedMessages();
-    for (const message of unsendedMessages) {
-      await this.sendMessage(message);
-      await this.outboxRepository.save({ ...message, status: outboxStatus.sent });
-    }
+    unsendedMessages.forEach(async (message) => await this.sendMessage(message));
   }
 }

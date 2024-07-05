@@ -1,2 +1,3 @@
 export * from './availabled-resolutions.enum';
-export * from './outbox-statuses';
+export * from '../../../../libs/providers/src/outbox/const/outbox-statuses';
+export * from './outbox-message.type';

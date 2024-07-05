@@ -1,5 +1,5 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Video } from '.';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '@app/core';
 
 enum outboxStatus {
   created = 'created',
@@ -8,10 +8,7 @@ enum outboxStatus {
 }
 
 @Entity()
-export class Outbox {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Outbox extends BaseEntity {
   @Column('varchar', { length: 20, nullable: false })
   topic: string;
 
@@ -21,7 +18,7 @@ export class Outbox {
   @Column({ type: 'enum', enum: outboxStatus, nullable: false })
   status: outboxStatus;
 
-  @OneToOne(() => Video)
-  @JoinColumn({ name: 'videoId', referencedColumnName: 'id' })
-  videoId: string;
+  // @OneToOne((E) => E)
+  // @JoinColumn({ name: 'videoId', referencedColumnName: 'id' })
+  // entityId: string;
 }

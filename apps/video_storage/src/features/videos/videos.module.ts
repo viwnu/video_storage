@@ -15,16 +15,10 @@ import { VideosAdapter } from './infrastucture/adapter';
 import { HttpModule } from '@nestjs/axios';
 import { ProvidersModule } from '@app/providers';
 import { ProducerService } from '@app/providers/kafka/producer';
-import { OutboxModule } from '../outbox/outbox.module';
+import { Outbox } from '@app/providers/outbox/db/entities';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Video]),
-    CqrsModule,
-    HttpModule.register({ timeout: 5000 }),
-    ProvidersModule,
-    OutboxModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Video, Outbox]), CqrsModule, HttpModule.register({ timeout: 5000 }), ProvidersModule],
   exports: [VideosService],
   controllers: [VideosController, VideosTestingController],
   providers: [
