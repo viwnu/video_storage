@@ -1,6 +1,6 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
-import { VIDEO_ENTITY } from './entities';
+import { VIDEO_ENTITIES } from './entities';
 
 export const TypeOrmConfigService = (): TypeOrmModuleAsyncOptions => ({
   useFactory: (configService: ConfigService) => ({
@@ -10,7 +10,7 @@ export const TypeOrmConfigService = (): TypeOrmModuleAsyncOptions => ({
     username: configService.get('PS_USER'),
     password: configService.get('PS_PASSWORD'),
     database: configService.get('PS_DB_NAME'),
-    entities: VIDEO_ENTITY,
+    entities: VIDEO_ENTITIES,
     autoLoadEntities: Boolean(configService.get('AUTO_LOAD_ENTITES') === 'true') || false,
     synchronize: Boolean(configService.get('SYNC_DB') === 'true') || false,
   }),

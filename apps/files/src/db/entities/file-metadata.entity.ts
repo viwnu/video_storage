@@ -16,7 +16,7 @@ export class FileMetaData extends BaseEntity {
   @Column('int', { nullable: false })
   size: number;
 
-  @OneToOne(() => FileDescription, (video) => video.fileId, { onDelete: 'CASCADE' })
+  @OneToOne(() => FileDescription, (FileDescription) => FileDescription.fileId, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'fileId', referencedColumnName: 'fileId' })
   fileId: string;
 }

@@ -11,13 +11,14 @@ import { QUERIES_HANDLERS } from './application/queries';
 import { EVENTS_HANDLERS } from './application/events';
 import { VideoFasade } from './application/video.fasade';
 import { videoFasadeFactory } from './application/video.fasade.factory';
-import { VideosAdapter } from './infrastucture/adapter';
+import { VideosQueryAdapter } from './infrastucture/adapter';
 import { HttpModule } from '@nestjs/axios';
 import { ProvidersModule } from '@app/providers';
 import { ProducerService } from '@app/providers/kafka/producer';
+import { Outbox } from '@app/providers/outbox/db/entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Video]), CqrsModule, HttpModule.register({ timeout: 5000 }), ProvidersModule],
+  imports: [TypeOrmModule.forFeature([Video, Outbox]), CqrsModule, HttpModule.register({ timeout: 5000 }), ProvidersModule],
   exports: [VideosService],
   controllers: [VideosController, VideosTestingController],
   providers: [
@@ -26,7 +27,7 @@ import { ProducerService } from '@app/providers/kafka/producer';
     ...QUERIES_HANDLERS,
     ...EVENTS_HANDLERS,
     { provide: VideoFasade, inject: [CommandBus, EventBus, QueryBus], useFactory: videoFasadeFactory },
-    { provide: VideosRepository, useClass: VideosAdapter },
+    { provide: VideosRepository, useClass: VideosQueryAdapter },
     ProducerService,
   ],
 })

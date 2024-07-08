@@ -6,6 +6,7 @@ import { VideosRepository } from '../infrastucture/repository';
 import { CreateVideoEvent } from './events/create-video';
 import { CreateVideoType } from './commands/create-video';
 import { UpdateVideoType } from './commands/update-video';
+import { OutboxMessageType } from 'apps/video_storage/src/const';
 
 @Injectable()
 export class VideosService {
@@ -19,8 +20,9 @@ export class VideosService {
     this.logger.log(`In ${this.createVideo.name} handler with: ${JSON.stringify(createVideoDto)}`);
     const newVideo = VideoAgregate.create(createVideoDto);
     newVideo.plainToInstance();
-    const video = await this.videosRepository.save(newVideo);
-    await this.eventBus.publish<CreateVideoEvent>(new CreateVideoEvent(video.id, video.title));
+    const message: OutboxMessageType = { ...newVideo, fileId: newVideo.id };
+    const video = await this.videosRepository.saveWithMessage(newVideo, message);
+    await this.eventBus.publish<CreateVideoEvent>(new CreateVideoEvent(video.id, video.title)); // Events dosesnt need anymore
     return VideoAgregate.buildVideoResponse(video);
   }
 

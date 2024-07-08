@@ -1,21 +1,38 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 
+import { AdapterRepository } from '@app/core';
 import { VideosRepository } from '../repository';
 import { Video } from '../../../../db/entities';
 import { VideoAgregate } from '../../domain';
-import { AdapterRepository } from '@app/core';
+import { OutboxMessageType } from '../../../../const';
+import { OutboxService } from '@app/providers/outbox/features/outbox/application';
 
 @Injectable()
 export class VideosAdapter extends AdapterRepository<VideoAgregate, Video> implements VideosRepository {
   logger = new Logger(VideosAdapter.name);
-  constructor(@InjectRepository(Video) private videosRepository: Repository<Video>) {
+  constructor(
+    @InjectRepository(Video) private videosRepository: Repository<Video>,
+    private readonly dataSource: DataSource,
+    private readonly outboxService: OutboxService,
+  ) {
     super(videosRepository);
   }
-  mapping(entity: VideoAgregate): VideoAgregate {
+  mapping(entity: VideoAgregate | Video): VideoAgregate {
     return VideoAgregate.mapping(entity);
   }
+
+  async saveWithMessage(entity: VideoAgregate, message: OutboxMessageType): Promise<VideoAgregate> {
+    const createdEntity = this.videosRepository.create(entity);
+    const savedEntity = await this.dataSource.transaction<Video>(async (manager: EntityManager): Promise<Video> => {
+      const savedEntity = await manager.save(createdEntity);
+      await this.outboxService.addMessage(manager, 'create-video', message);
+      return savedEntity;
+    });
+    return this.mapping(savedEntity);
+  }
+
   async findOne(id: string): Promise<VideoAgregate> {
     return await this.findByOptions({ where: { id } });
   }

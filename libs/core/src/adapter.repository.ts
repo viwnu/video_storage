@@ -3,13 +3,12 @@ import { FindManyOptions, FindOneOptions, FindOptionsWhere, Repository } from 't
 
 import { BaseEntity } from './base.entity';
 import { BaseRepository } from './base.repository';
-
 export abstract class AdapterRepository<T, E extends BaseEntity> implements BaseRepository<T, E> {
   abstract logger: Logger;
 
   constructor(private readonly adapterRepository: Repository<E>) {}
 
-  abstract mapping(entity: T): T;
+  abstract mapping(entity: T | E): T;
 
   async save(entity: T & E): Promise<T> {
     const savedEntity = await this.adapterRepository.save(entity);
