@@ -12,7 +12,7 @@ export class Outbox extends BaseEntity {
   @Column('varchar', { length: 20, nullable: false })
   topic: string;
 
-  @Column('varchar', { length: 1000, nullable: false }) // JSon B
+  @Column({ type: 'jsonb', length: 1000, nullable: false })
   payload: string;
 
   @Column({ type: 'enum', enum: outboxStatus, nullable: false })
