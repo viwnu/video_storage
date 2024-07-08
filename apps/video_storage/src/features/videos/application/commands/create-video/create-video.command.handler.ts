@@ -20,7 +20,7 @@ export class CreateVideoCommandHandler implements ICommandHandler<CreateVideoCom
     newVideo.plainToInstance();
     const message: OutboxMessageType = { ...newVideo, fileId: newVideo.id };
     const video = await this.videosRepository.saveWithMessage(newVideo, message);
-    await this.eventBus.publish<CreateVideoEvent>(new CreateVideoEvent(video.id, video.title));
+    await this.eventBus.publish<CreateVideoEvent>(new CreateVideoEvent(video.id, video.title)); // Events dosesnt need anymore
     return VideoAgregate.buildVideoResponse(video);
   }
 }
