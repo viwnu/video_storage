@@ -5,6 +5,7 @@ import { Outbox } from '../../../db/entities';
 import { OutboxRepository } from '../infrastucture/repository';
 import { ProducerService } from '../../../../kafka/producer';
 import { OutboxAgregate } from '../domain';
+import { Cron } from '@nestjs/schedule';
 
 enum outboxStatus {
   created = 'created',
@@ -47,5 +48,11 @@ export class OutboxService {
   async sendMessages(): Promise<void> {
     const unsendedMessages = await this.findCreatedMessages();
     unsendedMessages.forEach(async (message) => await this.sendMessage(message));
+  }
+
+  @Cron('*/5 * * * * *')
+  async sendOutboxMessages(): Promise<void> {
+    this.logger.log(`${this.sendOutboxMessages.name} method`);
+    await this.sendMessages();
   }
 }
