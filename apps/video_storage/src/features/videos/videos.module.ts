@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
+import { HttpModule } from '@nestjs/axios';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { VideosService } from './application';
-import { VideosController, VideosTestingController } from './api';
+import { VideosController, VideosTestingController } from './api/rest';
 import { Video } from '../../db/entities';
 import { VideosRepository } from './infrastucture/repository';
 import { COMMAND_HANDLERS } from './application/commands';
@@ -12,13 +15,23 @@ import { EVENTS_HANDLERS } from './application/events';
 import { VideoFasade } from './application/video.fasade';
 import { videoFasadeFactory } from './application/video.fasade.factory';
 import { VideosQueryAdapter } from './infrastucture/adapter';
-import { HttpModule } from '@nestjs/axios';
 import { ProvidersModule } from '@app/providers';
 import { ProducerService } from '@app/providers/kafka/producer';
 import { Outbox } from '@app/providers/outbox/db/entities';
+import { join } from 'path';
+import { VideosResolver } from './api/graphql';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Video, Outbox]), CqrsModule, HttpModule.register({ timeout: 5000 }), ProvidersModule],
+  imports: [
+    TypeOrmModule.forFeature([Video, Outbox]),
+    CqrsModule,
+    HttpModule.register({ timeout: 5000 }),
+    ProvidersModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'apps/video_storage/src/features/videos/api/graphql/schema.gql'),
+    }),
+  ],
   exports: [VideosService],
   controllers: [VideosController, VideosTestingController],
   providers: [
@@ -29,6 +42,7 @@ import { Outbox } from '@app/providers/outbox/db/entities';
     { provide: VideoFasade, inject: [CommandBus, EventBus, QueryBus], useFactory: videoFasadeFactory },
     { provide: VideosRepository, useClass: VideosQueryAdapter },
     ProducerService,
+    VideosResolver,
   ],
 })
 export class VideosModule {}

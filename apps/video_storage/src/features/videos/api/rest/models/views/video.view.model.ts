@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { availabledResolutions } from '../../../../../const';
+import { availabledResolutions } from '../../../../../../const';
 
 export class VideoViewModel {
   @ApiProperty({ type: 'string', example: 'sdfgser56446dsfg', description: 'ID видео' })

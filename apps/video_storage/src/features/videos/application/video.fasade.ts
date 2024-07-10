@@ -6,6 +6,7 @@ import { CreateVideoCommand, CreateVideoCommandHandler, CreateVideoType } from '
 import { UpdateVideoCommand, UpdateVideoCommandHandler, UpdateVideoType } from './commands/update-video';
 import { RemoveVideoCommand, RemoveVideoCommandHandler } from './commands/remove-video';
 import { RemoveAllVideoCommand, RemoveAllVideoCommandHandler } from './commands/remove-all-video';
+import { VideoBuildResponse } from '../domain';
 
 export class VideoFasade {
   constructor(
@@ -21,8 +22,8 @@ export class VideoFasade {
   };
   events = {};
   queries = {
-    getVideo: (videoId: string) => this.getVideo(videoId),
-    getVideos: () => this.getVideos(),
+    getVideo: (videoId: string): Promise<VideoBuildResponse> => this.getVideo(videoId),
+    getVideos: (): Promise<VideoBuildResponse[]> => this.getVideos(),
   };
   private getVideo(videoId: string) {
     return this.queryBus.execute<GetVideoQuery, Awaited<ReturnType<GetVideoQueryHandler['execute']>>>(

@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Param, Delete, Put, HttpCode, ParseUUIDPipe, Logger } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { Create, FindAll, FindOne, UpdateOne, DeleteOne } from '../../../common/decorators';
+import { Create, FindAll, FindOne, UpdateOne, DeleteOne } from '../../../../common/decorators';
 import { CreateVideoInputModel, UpdateVideoInputModel } from './models/input';
 import { VideoViewModel } from './models/views';
-import { VideoFasade } from '../application';
+import { VideoFasade } from '../../application';
 
 @ApiTags('Видео хостинг')
 @Controller('videos')
