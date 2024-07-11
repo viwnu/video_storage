@@ -16,7 +16,7 @@ export class OutboxAdapter extends AdapterRepository<OutboxAgregate, Outbox> imp
   }
 
   async findCreatedMessages(): Promise<OutboxAgregate[]> {
-    this.logger.log(`${this.findCreatedMessages.name} method`);
+    // this.logger.log(`${this.findCreatedMessages.name} method`);
     const raw = await this.outboxRepository.find({ where: { status: outboxStatus.created }, loadRelationIds: true });
     return raw.map((message) => this.mapping(message));
   }

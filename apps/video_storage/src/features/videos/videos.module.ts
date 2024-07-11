@@ -4,6 +4,7 @@ import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 import { VideosService } from './application';
 import { VideosController, VideosTestingController } from './api/rest';
@@ -18,8 +19,8 @@ import { VideosQueryAdapter } from './infrastucture/adapter';
 import { ProvidersModule } from '@app/providers';
 import { ProducerService } from '@app/providers/kafka/producer';
 import { Outbox } from '@app/providers/outbox/db/entities';
-import { join } from 'path';
 import { VideosResolver } from './api/graphql';
+import { gqlErrorHandler } from '@app/common/handlers/gql-error.handler';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { VideosResolver } from './api/graphql';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'apps/video_storage/src/features/videos/api/graphql/schema.gql'),
+      formatError: gqlErrorHandler,
     }),
   ],
   exports: [VideosService],

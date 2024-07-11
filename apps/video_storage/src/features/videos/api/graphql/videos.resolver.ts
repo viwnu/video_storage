@@ -1,10 +1,9 @@
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
-import { VideoFasade } from '../../application';
-import { VideoGraphqlModel } from './models/types';
 import { Logger } from '@nestjs/common';
-import { CreateVideoInputType } from './models/input/create-video.input.type';
-import { UpdateVideoInputType } from './models/input/update-video.input.type';
-import { SuccessModel } from './models/types/succes.model';
+
+import { VideoFasade } from '../../application';
+import { VideoGraphqlModel, SuccessModel } from './models/types';
+import { CreateVideoInputType, UpdateVideoInputType } from './models/input';
 
 @Resolver()
 export class VideosResolver {
