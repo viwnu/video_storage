@@ -1,5 +1,5 @@
 import { Field, GraphQLISODateTime, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { availabledResolutions } from 'apps/video_storage/src/const';
+import { availabledResolutions } from '../../../../../../const';
 
 registerEnumType(availabledResolutions, { name: 'availabledResolutions' });
 

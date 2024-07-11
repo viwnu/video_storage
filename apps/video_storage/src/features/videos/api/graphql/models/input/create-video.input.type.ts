@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { availabledResolutions } from 'apps/video_storage/src/const';
+import { availabledResolutions } from '../../../../../../const';
 import {
   IsBoolean,
   IsByteLength,
