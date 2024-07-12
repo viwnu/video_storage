@@ -33,7 +33,7 @@ export class OutboxService {
   }
 
   async findCreatedMessages(): Promise<OutboxAgregate[]> {
-    this.logger.log(`${this.findCreatedMessages.name} method`);
+    // this.logger.log(`${this.findCreatedMessages.name} method`);
     return this.outboxRepository.findCreatedMessages();
   }
 
@@ -52,7 +52,7 @@ export class OutboxService {
 
   @Cron('*/5 * * * * *')
   async sendOutboxMessages(): Promise<void> {
-    this.logger.log(`${this.sendOutboxMessages.name} method`);
+    // this.logger.log(`${this.sendOutboxMessages.name} method`);
     await this.sendMessages();
   }
 }

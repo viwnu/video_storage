@@ -1,0 +1,73 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type VideoGraphqlModel {
+  """ID видео"""
+  id: String!
+
+  """Название видео"""
+  title: String!
+
+  """Имя автора"""
+  author: String!
+
+  """Доступные разрешения"""
+  availabledResolutions: availabledResolutions!
+
+  """Можно ли скачать"""
+  canBeDownloaded: Boolean
+
+  """Минимальный  разрешенный возраст"""
+  minAgeRestriction: Int
+
+  """Дата создания в формате ISO"""
+  createdAt: DateTime
+
+  """Дата публикации в формате ISO"""
+  publicationDate: DateTime
+}
+
+enum availabledResolutions {
+  P144
+  P240
+  P360
+  P480
+  P720
+  P1080
+  P1440
+  P2160
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  video(
+    """ID видео"""
+    id: String!
+  ): VideoGraphqlModel!
+}
+
+type Mutation {
+  createVideo(createVideoDto: CreateVideoInputType!): VideoGraphqlModel!
+}
+
+input CreateVideoInputType {
+  """Название видео"""
+  title: String!
+
+  """Автор видео"""
+  author: String!
+
+  """Доступные разрешения видео"""
+  availabledResolutions: availabledResolutions
+
+  """Можно ли скачать"""
+  canBeDownloaded: Boolean
+
+  """Минимальный  разрешенный возраст"""
+  minAgeRestriction: Int
+}

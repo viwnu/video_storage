@@ -1,6 +1,6 @@
 import { Controller, Delete, HttpCode, Logger } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { VideoFasade } from '../application/video.fasade';
+import { VideoFasade } from '../../application/video.fasade';
 
 @ApiTags('Очистка всей таблицы')
 @Controller('testing')
