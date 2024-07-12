@@ -89,4 +89,10 @@ export class FilesService {
     await this.fileDescriptionsRepository.deleteAll();
     return;
   }
+
+  async getFileDescription(fileId: string): Promise<FileDescriptionAgregate> {
+    this.logger.log(`Getting file descriptions with fileId: ${fileId}`);
+    const existingFile = await this.fileDescriptionsRepository.findOne(fileId);
+    return existingFile;
+  }
 }

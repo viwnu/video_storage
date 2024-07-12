@@ -41,6 +41,9 @@ describe('files (e2e)', () => {
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(true), 1000);
+    });
   });
 
   describe('create file description', () => {

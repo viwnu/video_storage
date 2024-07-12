@@ -303,7 +303,7 @@ describe('App gql (e2e)', () => {
               success
             }
           }`;
-      const postResponse = await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/graphql')
         .send({
           query: mutation,
@@ -313,7 +313,7 @@ describe('App gql (e2e)', () => {
             dto: { title: 'changed title' },
           },
         });
-      expect(postResponse.body.errors[0].extensions.statusCode).toEqual(404);
+      expect(response.body.errors[0].extensions.statusCode).toEqual(404);
     });
 
     it(`mutation updateVideo(\${id}, $dto: INVALID_INPUT) BAD_USER_INPUT`, async () => {

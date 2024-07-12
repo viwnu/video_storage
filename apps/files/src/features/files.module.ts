@@ -16,10 +16,10 @@ import { FileMetaDatasRepository } from './files/infrastucture/repository';
 import { FileMetaDataAdaptor } from './files/infrastucture/adapter/file-metadata.adaptor';
 import { QUERIES_HANDLERS } from './files/application/queries';
 import { FilesConsumer } from './files/api/files.consumer';
-import { ProvidersModule } from '@app/providers';
+import { KafkaModule } from '@app/providers/kafka/kafka.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FileDescription, FileMetaData]), CqrsModule, SharedModule, ProvidersModule],
+  imports: [TypeOrmModule.forFeature([FileDescription, FileMetaData]), CqrsModule, SharedModule, KafkaModule],
   exports: [FilesService],
   controllers: [FilesController],
   providers: [
